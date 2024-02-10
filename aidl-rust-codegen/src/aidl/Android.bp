@@ -1,0 +1,24 @@
+rust_library {
+    name: "libparcelable_stubs",
+    crate_name: "parcelable_stubs",
+    srcs: [
+        "parcelable_stubs/ParcelableUMessage.rs",
+    ],
+    rustlibs: [
+        "libbinder_rs",
+    ],
+}
+
+aidl_interface {
+    name: "org.eclipse.uprotocol.core.ubus.iulistener",
+    srcs: ["org/eclipse/uprotocol/core/ubus/IUListener.aidl"],
+    unstable: true,
+    backend: {
+        rust: {
+            enabled: true,
+            additional_rustlibs: [
+                "libparcelable_stubs",
+            ],
+        },
+    },
+}
