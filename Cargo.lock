@@ -32,7 +32,7 @@ version = "0.1.5-SNAPSHOT"
 dependencies = [
  "anyhow",
  "async-trait",
- "binder_ndk",
+ "binder",
  "binder_tokio",
  "clap",
  "lazy_static",
@@ -126,8 +126,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "binder_ndk"
+name = "binder"
 version = "0.2.0"
+source = "git+https://github.com/PLeVasseur/binder_rs.git?branch=main#99e60f2a9f725f33feb20f4216fc6f0637f729c9"
 dependencies = [
  "binder_ndk_sys",
  "downcast-rs",
@@ -137,6 +138,7 @@ dependencies = [
 [[package]]
 name = "binder_ndk_sys"
 version = "0.2.0"
+source = "git+https://github.com/PLeVasseur/binder_rs.git?branch=main#99e60f2a9f725f33feb20f4216fc6f0637f729c9"
 dependencies = [
  "anyhow",
  "bindgen",
@@ -145,8 +147,9 @@ dependencies = [
 [[package]]
 name = "binder_tokio"
 version = "0.2.0"
+source = "git+https://github.com/PLeVasseur/binder_rs.git?branch=main#99e60f2a9f725f33feb20f4216fc6f0637f729c9"
 dependencies = [
- "binder_ndk",
+ "binder",
  "tokio",
  "tokio-runtime",
 ]

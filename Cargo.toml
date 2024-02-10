@@ -30,8 +30,8 @@ license = "Apache-2.0"
 
 [workspace.dependencies]
 anyhow = "1.0.69"
-binder = { package = "binder_ndk", path = "../binder_rs/binder" }
-binder_tokio = { path = "../binder_rs/binder_tokio" }
+binder = { git = "https://github.com/PLeVasseur/binder_rs.git", branch = "main" }
+binder_tokio = { git = "https://github.com/PLeVasseur/binder_rs.git", branch = "main" }
 clap = { version = "4.1.7", features = ["derive"] }
 tokio = { version = "1.25.0", features = ["full"] }
 async-trait = "0.1.64"
