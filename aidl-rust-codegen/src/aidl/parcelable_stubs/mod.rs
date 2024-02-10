@@ -1,2 +1,1 @@
-mod ParcelableUMessage;
-pub use self::ParcelableUMessage::UMessage as UMessage;
+pub mod ParcelableUMessage;

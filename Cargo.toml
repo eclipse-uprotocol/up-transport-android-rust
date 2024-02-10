@@ -30,9 +30,14 @@ license = "Apache-2.0"
 
 [workspace.dependencies]
 anyhow = "1.0.69"
+async-trait = "0.1.64"
 binder = { git = "https://github.com/PLeVasseur/binder_rs.git", branch = "main" }
 binder_tokio = { git = "https://github.com/PLeVasseur/binder_rs.git", branch = "main" }
 clap = { version = "4.1.7", features = ["derive"] }
-tokio = { version = "1.25.0", features = ["full"] }
-async-trait = "0.1.64"
 lazy_static = "1.4.0"
+protobuf = { version = "3.3" }
+tokio = { version = "1.25.0", features = ["full"] }
+# temporarily use version on branch, since it works behind proxy
+up-rust = { package = "uprotocol-sdk", git = "https://github.com/PLeVasseur/uprotocol-rust_fork.git", branch = "feature/protobuf_id_u32_to_micro_serializer_u16_checks" }
+# upstream
+# up-rust = { package = "uprotocol-sdk", git = "https://github.com/eclipse-uprotocol/up-rust.git", branch = "main" }

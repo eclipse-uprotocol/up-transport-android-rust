@@ -28,23 +28,46 @@ use binder::{
     StatusCode,
 };
 
-// use crate::struct_def::UMessage;
-//
-// #[cfg(feature = "use_proto")]
-// pub mod struct_def {
-//     // Re-export the struct from the boundary crate
-//     pub use uprotocol_sdk::uprotocol::umessage::UMessage;
-// }
-// #[cfg(not(feature = "use_proto"))]
-// pub mod struct_def {
-    #[derive(Clone, Debug, Default, Eq, PartialEq)]
-    pub struct UMessage {}
-// }
+use std::ops::{Deref, DerefMut};
+
+#[cfg(feature = "use_proto")]
+use protobuf::Message;
+
+#[cfg(feature = "use_proto")]
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct ParcelableUMessage(up_rust::uprotocol::UMessage);
+
+#[cfg(feature = "use_proto")]
+impl From<up_rust::uprotocol::UMessage> for ParcelableUMessage{
+    fn from(item: up_rust::uprotocol::UMessage) -> Self {
+        ParcelableUMessage(item)
+    }
+}
+
+#[cfg(feature = "use_proto")]
+impl Deref for ParcelableUMessage {
+    type Target = up_rust::uprotocol::UMessage;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+#[cfg(feature = "use_proto")]
+impl DerefMut for ParcelableUMessage {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+#[cfg(not(feature = "use_proto"))]
+pub struct ParcelableUMessage;
 
 /// Rust `UnstructuredParcelable` stub for `ParcelableUMessage`
-/// True implementation is in parcelable_impls
+/// True implementation is down below
 /// This exists just to allow the Android aidl_interface build process to succeed
-impl UnstructuredParcelable for UMessage {
+#[cfg(not(feature = "use_proto"))]
+impl UnstructuredParcelable for ParcelableUMessage {
     fn write_to_parcel(&self, parcel: &mut BorrowedParcel) -> Result<(), StatusCode> {
         Ok(())
     }
@@ -54,5 +77,17 @@ impl UnstructuredParcelable for UMessage {
     }
 }
 
-impl_deserialize_for_unstructured_parcelable!(UMessage);
-impl_serialize_for_unstructured_parcelable!(UMessage);
+/// Rust `UnstructuredParcelable` implementation for `ParcelableUMessage` using Protobuf serialization/deserialization
+#[cfg(feature = "use_proto")]
+impl UnstructuredParcelable for ParcelableUMessage {
+    fn write_to_parcel(&self, parcel: &mut BorrowedParcel) -> Result<(), StatusCode> {
+        Ok(())
+    }
+
+    fn from_parcel(parcel: &BorrowedParcel) -> Result<Self, StatusCode> {
+        Ok( Self::default() )
+    }
+}
+
+impl_deserialize_for_unstructured_parcelable!(ParcelableUMessage);
+impl_serialize_for_unstructured_parcelable!(ParcelableUMessage);

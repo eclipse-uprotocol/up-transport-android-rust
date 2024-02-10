@@ -11,9 +11,16 @@ license.workspace = true
 
 [dependencies]
 anyhow = { workspace = true }
+async-trait = { workspace = true }
 binder = { workspace = true }
 binder_tokio = { workspace = true }
 clap = { workspace = true }
-tokio = { workspace = true }
-async-trait = { workspace = true }
 lazy_static = { workspace = true }
+protobuf = { workspace = true }
+tokio = { workspace = true }
+up-rust = { workspace = true }
+
+[features]
+use_proto = []
+
+default = ["use_proto"]

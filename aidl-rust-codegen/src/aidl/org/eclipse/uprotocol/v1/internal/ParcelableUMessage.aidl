@@ -23,4 +23,4 @@
  */
 package org.eclipse.uprotocol.v1.internal;
 
-parcelable ParcelableUMessage rust_type "parcelable_stubs::UMessage";
+parcelable ParcelableUMessage rust_type "parcelable_stubs::ParcelableUMessage";

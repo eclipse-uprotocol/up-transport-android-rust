@@ -21,7 +21,7 @@
  * SPDX-FileCopyrightText: 2023 General Motors GTO LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-use parcelable_stubs::UMessage;
+use parcelable_stubs::ParcelableUMessage;
 
 /// Implementation of the `IUListener` AIDL interface.
 use org_eclipse_uprotocol_core_ubus_iulistener::aidl::org::eclipse::uprotocol::core::ubus::IUListener::IUListener;
@@ -33,7 +33,7 @@ pub struct MyStubIUListener;
 impl binder::Interface for MyStubIUListener {}
 
 impl IUListener for MyStubIUListener {
-    fn onReceive(&self, event: &UMessage) -> binder::Result<()> {
+    fn onReceive(&self, event: &ParcelableUMessage) -> binder::Result<()> {
         Ok(())
     }
 }

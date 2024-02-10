@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Using: out/host/linux-x86/bin/aidl --lang=rust -Weverything -Wno-missing-permission-annotation --min_sdk_version current --ninja -d out/soong/.intermediates/external/rust/up-client-android-rust/aidl-rust-codegen/aidl/org.eclipse.uprotocol.core.ubus.iulistener-rust-source/gen/org/eclipse/uprotocol/core/ubus/IUListener.rs.d -o out/soong/.intermediates/external/rust/up-client-android-rust/aidl-rust-codegen/aidl/org.eclipse.uprotocol.core.ubus.iulistener-rust-source/gen -Nexternal/rust/up-client-android-rust/aidl-rust-codegen/aidl external/rust/up-client-android-rust/aidl-rust-codegen/aidl/org/eclipse/uprotocol/core/ubus/IUListener.aidl
+ * Using: out/host/linux-x86/bin/aidl --lang=rust -Weverything -Wno-missing-permission-annotation --min_sdk_version current --ninja -d out/soong/.intermediates/external/rust/up-client-android-rust/aidl-rust-codegen/src/aidl/org.eclipse.uprotocol.core.ubus.iulistener-rust-source/gen/org/eclipse/uprotocol/core/ubus/IUListener.rs.d -o out/soong/.intermediates/external/rust/up-client-android-rust/aidl-rust-codegen/src/aidl/org.eclipse.uprotocol.core.ubus.iulistener-rust-source/gen -Nexternal/rust/up-client-android-rust/aidl-rust-codegen/src/aidl external/rust/up-client-android-rust/aidl-rust-codegen/src/aidl/org/eclipse/uprotocol/core/ubus/IUListener.aidl
  */
 #![forbid(unsafe_code)]
 #![cfg_attr(rustfmt, rustfmt_skip)]
@@ -19,7 +19,7 @@ declare_binder_interface! {
 }
 pub trait IUListener: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUListener" }
-  fn r#onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> binder::Result<()>;
+  fn r#onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> binder::Result<()>;
   fn getDefaultImpl() -> IUListenerDefaultRef where Self: Sized {
     DEFAULT_IMPL.lock().unwrap().clone()
   }
@@ -29,12 +29,12 @@ pub trait IUListener: binder::Interface + Send {
 }
 pub trait IUListenerAsync<P>: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUListener" }
-  fn r#onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> std::future::Ready<binder::Result<()>>;
+  fn r#onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> std::future::Ready<binder::Result<()>>;
 }
 #[::async_trait::async_trait]
 pub trait IUListenerAsyncServer: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUListener" }
-  async fn r#onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> binder::Result<()>;
+  async fn r#onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> binder::Result<()>;
 }
 impl BnUListener {
   /// Create a new async binder service.
@@ -56,7 +56,7 @@ impl BnUListener {
       T: IUListenerAsyncServer + Send + Sync + 'static,
       R: binder::binder_impl::BinderAsyncRuntime + Send + Sync + 'static,
     {
-      fn r#onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> binder::Result<()> {
+      fn r#onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> binder::Result<()> {
         self._rt.block_on(self._inner.r#onReceive(_arg_event))
       }
     }
@@ -65,7 +65,7 @@ impl BnUListener {
   }
 }
 pub trait IUListenerDefault: Send + Sync {
-  fn r#onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> binder::Result<()> {
+  fn r#onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> binder::Result<()> {
     Err(binder::StatusCode::UNKNOWN_TRANSACTION.into())
   }
 }
@@ -75,12 +75,12 @@ pub mod transactions {
 pub type IUListenerDefaultRef = Option<std::sync::Arc<dyn IUListenerDefault>>;
 static DEFAULT_IMPL: std::sync::Mutex<IUListenerDefaultRef> = std::sync::Mutex::new(None);
 impl BpUListener {
-  fn build_parcel_onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> binder::Result<binder::binder_impl::Parcel> {
+  fn build_parcel_onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
     aidl_data.write(_arg_event)?;
     Ok(aidl_data)
   }
-  fn read_response_onReceive(&self, _arg_event: &parcelable_stubs::UMessage, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<()> {
+  fn read_response_onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<()> {
     if let Err(binder::StatusCode::UNKNOWN_TRANSACTION) = _aidl_reply {
       if let Some(_aidl_default_impl) = <Self as IUListener>::getDefaultImpl() {
         return _aidl_default_impl.r#onReceive(_arg_event);
@@ -91,14 +91,14 @@ impl BpUListener {
   }
 }
 impl IUListener for BpUListener {
-  fn r#onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> binder::Result<()> {
+  fn r#onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> binder::Result<()> {
     let _aidl_data = self.build_parcel_onReceive(_arg_event)?;
     let _aidl_reply = self.binder.submit_transact(transactions::r#onReceive, _aidl_data, binder::binder_impl::FLAG_ONEWAY | binder::binder_impl::FLAG_PRIVATE_LOCAL);
     self.read_response_onReceive(_arg_event, _aidl_reply)
   }
 }
 impl<P: binder::BinderAsyncPool> IUListenerAsync<P> for BpUListener {
-  fn r#onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> std::future::Ready<binder::Result<()>> {
+  fn r#onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> std::future::Ready<binder::Result<()>> {
     let _aidl_data = match self.build_parcel_onReceive(_arg_event) {
       Ok(_aidl_data) => _aidl_data,
       Err(err) => return std::future::ready(Err(err)),
@@ -108,12 +108,12 @@ impl<P: binder::BinderAsyncPool> IUListenerAsync<P> for BpUListener {
   }
 }
 impl IUListener for binder::binder_impl::Binder<BnUListener> {
-  fn r#onReceive(&self, _arg_event: &parcelable_stubs::UMessage) -> binder::Result<()> { self.0.r#onReceive(_arg_event) }
+  fn r#onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> binder::Result<()> { self.0.r#onReceive(_arg_event) }
 }
 fn on_transact(_aidl_service: &dyn IUListener, _aidl_code: binder::binder_impl::TransactionCode, _aidl_data: &binder::binder_impl::BorrowedParcel<'_>, _aidl_reply: &mut binder::binder_impl::BorrowedParcel<'_>) -> std::result::Result<(), binder::StatusCode> {
   match _aidl_code {
     transactions::r#onReceive => {
-      let _arg_event: parcelable_stubs::UMessage = _aidl_data.read()?;
+      let _arg_event: parcelable_stubs::ParcelableUMessage = _aidl_data.read()?;
       let _aidl_return = _aidl_service.r#onReceive(&_arg_event);
       Ok(())
     }
