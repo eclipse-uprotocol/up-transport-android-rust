@@ -60,6 +60,13 @@ impl DerefMut for ParcelableUMessage {
     }
 }
 
+#[cfg(feature = "use_proto")]
+impl AsRef<up_rust::uprotocol::UMessage> for ParcelableUMessage {
+    fn as_ref(&self) -> &up_rust::uprotocol::UMessage {
+        &self.0
+    }
+}
+
 #[cfg(not(feature = "use_proto"))]
 pub struct ParcelableUMessage;
 
@@ -81,11 +88,19 @@ impl UnstructuredParcelable for ParcelableUMessage {
 #[cfg(feature = "use_proto")]
 impl UnstructuredParcelable for ParcelableUMessage {
     fn write_to_parcel(&self, parcel: &mut BorrowedParcel) -> Result<(), StatusCode> {
+        let umessage = &self.0;
+        let bytes = umessage.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
+        parcel.write(&(bytes.len() as i32))?;
+        parcel.write(&bytes)?;
         Ok(())
     }
 
     fn from_parcel(parcel: &BorrowedParcel) -> Result<Self, StatusCode> {
-        Ok( Self::default() )
+        let _size = parcel.read::<i32>()?;
+        let bytes = parcel.read::<Vec<u8>>()?;
+        let umessage = up_rust::uprotocol::UMessage::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
+        let parcelable_umessage = ParcelableUMessage(umessage);
+        Ok(parcelable_umessage)
     }
 }
 

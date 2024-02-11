@@ -8,7 +8,11 @@
 #![allow(non_snake_case)]
 #[allow(unused_imports)] use binder::binder_impl::IBinderInternal;
 use binder::declare_binder_interface;
+use binder::StatusCode;
+
 use crate::parcelable_stubs;
+use protobuf::Message;
+
 declare_binder_interface! {
   IUListener["org.eclipse.uprotocol.core.ubus.IUListener"] {
     native: BnUListener(on_transact),
@@ -77,7 +81,10 @@ static DEFAULT_IMPL: std::sync::Mutex<IUListenerDefaultRef> = std::sync::Mutex::
 impl BpUListener {
   fn build_parcel_onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
-    aidl_data.write(_arg_event)?;
+    let umessage = _arg_event.as_ref();
+    let bytes = umessage.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
+    aidl_data.write(&(bytes.len() as i32))?;
+    aidl_data.write(&bytes)?;
     Ok(aidl_data)
   }
   fn read_response_onReceive(&self, _arg_event: &parcelable_stubs::ParcelableUMessage, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<()> {
@@ -113,8 +120,11 @@ impl IUListener for binder::binder_impl::Binder<BnUListener> {
 fn on_transact(_aidl_service: &dyn IUListener, _aidl_code: binder::binder_impl::TransactionCode, _aidl_data: &binder::binder_impl::BorrowedParcel<'_>, _aidl_reply: &mut binder::binder_impl::BorrowedParcel<'_>) -> std::result::Result<(), binder::StatusCode> {
   match _aidl_code {
     transactions::r#onReceive => {
-      let _arg_event: parcelable_stubs::ParcelableUMessage = _aidl_data.read()?;
-      let _aidl_return = _aidl_service.r#onReceive(&_arg_event);
+      let _size = _aidl_data.read::<i32>()?;
+      let bytes = _aidl_data.read::<Vec<u8>>()?;
+      let umessage = up_rust::uprotocol::UMessage::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
+      let parcelable_umessage = parcelable_stubs::ParcelableUMessage::from(umessage);
+      let _aidl_return = _aidl_service.r#onReceive(&parcelable_umessage);
       Ok(())
     }
     _ => Err(binder::StatusCode::UNKNOWN_TRANSACTION)
