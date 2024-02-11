@@ -13,6 +13,7 @@
 resolver = "2"
 members = [
     "aidl-rust-codegen",
+    "iulistener-example",
 #    "aidl-downloader"
 ]
 
