@@ -563,6 +563,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1a46d1a171d865aa5f83f92695765caa047a9b4cbae2cbf37dbd613a793fd4c"
 
 [[package]]
+name = "iubus-iulistener-example"
+version = "0.1.5-SNAPSHOT"
+dependencies = [
+ "aidl-rust-codegen",
+ "anyhow",
+ "async-trait",
+ "binder",
+ "binder_tokio",
+ "clap",
+ "lazy_static",
+ "protobuf",
+ "tokio",
+ "uprotocol-sdk",
+]
+
+[[package]]
 name = "iulistener-example"
 version = "0.1.5-SNAPSHOT"
 dependencies = [

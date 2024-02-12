@@ -36,7 +36,6 @@ pub struct MyStubIUBus;
 impl binder::Interface for MyStubIUBus {}
 
 impl IUBus for MyStubIUBus {
-//     ParcelableUStatus registerClient(in String packageName, in ParcelableUEntity entity, in IBinder clientToken, in int flags, in IUListener listener);
     fn registerClient(&self, packageName: &str, entity: &ParcelableUEntity, clientToken: &SpIBinder, flags: i32, listener: &Strong<(dyn org_eclipse_uprotocol_core_ubus_iubus::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener + 'static)>) -> binder::Result<ParcelableUStatus> {
         Ok(ParcelableUStatus::default())
     }

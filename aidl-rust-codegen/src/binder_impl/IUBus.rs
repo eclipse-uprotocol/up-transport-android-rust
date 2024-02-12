@@ -8,6 +8,10 @@
 #![allow(non_snake_case)]
 #[allow(unused_imports)] use binder::binder_impl::IBinderInternal;
 use binder::declare_binder_interface;
+
+use crate::parcelable_stubs;
+use protobuf::Message;
+
 declare_binder_interface! {
   IUBus["org.eclipse.uprotocol.core.ubus.IUBus"] {
     native: BnUBus(on_transact),
@@ -18,7 +22,7 @@ declare_binder_interface! {
 }
 pub trait IUBus: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUBus" }
-  fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
   fn getDefaultImpl() -> IUBusDefaultRef where Self: Sized {
     DEFAULT_IMPL.lock().unwrap().clone()
   }
@@ -28,12 +32,12 @@ pub trait IUBus: binder::Interface + Send {
 }
 pub trait IUBusAsync<P>: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUBus" }
-  fn r#registerClient<'a>(&'a self, _arg_packageName: &'a str, _arg_entity: &'a parcelable_stubs::ParcelableUEntity, _arg_clientToken: &'a binder::SpIBinder, _arg_flags: i32, _arg_listener: &'a binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>>;
+  fn r#registerClient<'a>(&'a self, _arg_packageName: &'a str, _arg_entity: &'a parcelable_stubs::ParcelableUEntity, _arg_clientToken: &'a binder::SpIBinder, _arg_flags: i32, _arg_listener: &'a binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>>;
 }
 #[::async_trait::async_trait]
 pub trait IUBusAsyncServer: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUBus" }
-  async fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  async fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
 }
 impl BnUBus {
   /// Create a new async binder service.
@@ -55,7 +59,7 @@ impl BnUBus {
       T: IUBusAsyncServer + Send + Sync + 'static,
       R: binder::binder_impl::BinderAsyncRuntime + Send + Sync + 'static,
     {
-      fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+      fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
         self._rt.block_on(self._inner.r#registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener))
       }
     }
@@ -64,7 +68,7 @@ impl BnUBus {
   }
 }
 pub trait IUBusDefault: Send + Sync {
-  fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+  fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
     Err(binder::StatusCode::UNKNOWN_TRANSACTION.into())
   }
 }
@@ -74,16 +78,17 @@ pub mod transactions {
 pub type IUBusDefaultRef = Option<std::sync::Arc<dyn IUBusDefault>>;
 static DEFAULT_IMPL: std::sync::Mutex<IUBusDefaultRef> = std::sync::Mutex::new(None);
 impl BpUBus {
-  fn build_parcel_registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::Result<binder::binder_impl::Parcel> {
+  fn build_parcel_registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
     aidl_data.write(_arg_packageName)?;
+    // TODO: Pack this using Protobuf
     aidl_data.write(_arg_entity)?;
     aidl_data.write(_arg_clientToken)?;
     aidl_data.write(&_arg_flags)?;
     aidl_data.write(_arg_listener)?;
     Ok(aidl_data)
   }
-  fn read_response_registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+  fn read_response_registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
     if let Err(binder::StatusCode::UNKNOWN_TRANSACTION) = _aidl_reply {
       if let Some(_aidl_default_impl) = <Self as IUBus>::getDefaultImpl() {
         return _aidl_default_impl.r#registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener);
@@ -97,14 +102,14 @@ impl BpUBus {
   }
 }
 impl IUBus for BpUBus {
-  fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+  fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
     let _aidl_data = self.build_parcel_registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener)?;
     let _aidl_reply = self.binder.submit_transact(transactions::r#registerClient, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL);
     self.read_response_registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener, _aidl_reply)
   }
 }
 impl<P: binder::BinderAsyncPool> IUBusAsync<P> for BpUBus {
-  fn r#registerClient<'a>(&'a self, _arg_packageName: &'a str, _arg_entity: &'a parcelable_stubs::ParcelableUEntity, _arg_clientToken: &'a binder::SpIBinder, _arg_flags: i32, _arg_listener: &'a binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>> {
+  fn r#registerClient<'a>(&'a self, _arg_packageName: &'a str, _arg_entity: &'a parcelable_stubs::ParcelableUEntity, _arg_clientToken: &'a binder::SpIBinder, _arg_flags: i32, _arg_listener: &'a binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>> {
     let _aidl_data = match self.build_parcel_registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener) {
       Ok(_aidl_data) => _aidl_data,
       Err(err) => return Box::pin(std::future::ready(Err(err))),
@@ -119,16 +124,17 @@ impl<P: binder::BinderAsyncPool> IUBusAsync<P> for BpUBus {
   }
 }
 impl IUBus for binder::binder_impl::Binder<BnUBus> {
-  fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> { self.0.r#registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener) }
+  fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> { self.0.r#registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener) }
 }
 fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::TransactionCode, _aidl_data: &binder::binder_impl::BorrowedParcel<'_>, _aidl_reply: &mut binder::binder_impl::BorrowedParcel<'_>) -> std::result::Result<(), binder::StatusCode> {
   match _aidl_code {
     transactions::r#registerClient => {
       let _arg_packageName: String = _aidl_data.read()?;
+      // TODO: Unpack this using Protobuf
       let _arg_entity: parcelable_stubs::ParcelableUEntity = _aidl_data.read()?;
       let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
       let _arg_flags: i32 = _aidl_data.read()?;
-      let _arg_listener: binder::Strong<dyn crate::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener> = _aidl_data.read()?;
+      let _arg_listener: binder::Strong<dyn crate::binder_impls::IUListener::IUListener> = _aidl_data.read()?;
       let _aidl_return = _aidl_service.r#registerClient(&_arg_packageName, &_arg_entity, &_arg_clientToken, _arg_flags, &_arg_listener);
       match &_aidl_return {
         Ok(_aidl_return) => {
