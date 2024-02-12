@@ -8,6 +8,7 @@
 #![allow(non_snake_case)]
 #[allow(unused_imports)] use binder::binder_impl::IBinderInternal;
 use binder::declare_binder_interface;
+use binder::StatusCode;
 
 use crate::parcelable_stubs;
 use protobuf::Message;
@@ -81,8 +82,12 @@ impl BpUBus {
   fn build_parcel_registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
     aidl_data.write(_arg_packageName)?;
-    // TODO: Pack this using Protobuf
-    aidl_data.write(_arg_entity)?;
+    // Pack ParcelableUEntity using Protobuf - Start
+    let uentity = _arg_entity.as_ref();
+    let bytes = uentity.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
+    aidl_data.write(&(bytes.len() as i32))?;
+    aidl_data.write(&bytes)?;
+    // Pack ParcelableUEntity using Protobuf - End
     aidl_data.write(_arg_clientToken)?;
     aidl_data.write(&_arg_flags)?;
     aidl_data.write(_arg_listener)?;
@@ -130,8 +135,12 @@ fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::Trans
   match _aidl_code {
     transactions::r#registerClient => {
       let _arg_packageName: String = _aidl_data.read()?;
-      // TODO: Unpack this using Protobuf
-      let _arg_entity: parcelable_stubs::ParcelableUEntity = _aidl_data.read()?;
+      // Unpack ParcelableUEntity using Protobuf - Start
+      let _size = _aidl_data.read::<i32>()?;
+      let bytes = _aidl_data.read::<Vec<u8>>()?;
+      let uentity = up_rust::uprotocol::UEntity::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
+      let _arg_entity = parcelable_stubs::ParcelableUEntity::from(uentity);
+      // Unpack ParcelableUEntity using Protobuf - End
       let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
       let _arg_flags: i32 = _aidl_data.read()?;
       let _arg_listener: binder::Strong<dyn crate::binder_impls::IUListener::IUListener> = _aidl_data.read()?;
