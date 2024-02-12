@@ -39,12 +39,30 @@ impl IUBus for MyStubIUBus {
     fn registerClient(&self, packageName: &str, entity: &ParcelableUEntity, clientToken: &SpIBinder, flags: i32, listener: &Strong<(dyn org_eclipse_uprotocol_core_ubus_iubus::mangled::_3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener + 'static)>) -> binder::Result<ParcelableUStatus> {
         Ok(ParcelableUStatus::default())
     }
-//     ParcelableUStatus unregisterClient(in IBinder clientToken);
-//     ParcelableUStatus send(in ParcelableUMessage message, in IBinder clientToken);
-//     @nullable ParcelableUMessage[] pull(in ParcelableUUri uri, int count, in @nullable Bundle extras, IBinder clientToken);
-//     ParcelableUStatus enableDispatching(in ParcelableUUri uri, in @nullable Bundle extras, IBinder clientToken);
-//     ParcelableUStatus disableDispatching(in ParcelableUUri uri, in @nullable Bundle extras, IBinder clientToken);
-//     fn onReceive(&self, event: &ParcelableUMessage) -> binder::Result<()> {
-//         Ok(())
-//     }
+
+    fn unregisterClient(&self, clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
+        Ok(ParcelableUStatus::default())
+    }
+
+    fn send(&self, message: &ParcelableUMessage, clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
+        Ok(ParcelableUStatus::default())
+    }
+
+    // TODO: Discuss what the Bundle extras are for... doesn't appear to be available in Rust (yet?)
+    //  @nullable ParcelableUMessage[] pull(in ParcelableUUri uri, int count, in @nullable Bundle extras, IBinder clientToken);
+    fn pull(&self, uri: &ParcelableUUri, count: i32, clientToken: &SpIBinder) -> binder::Result<Option<Vec<Option<ParcelableUMessage>>>> {
+        Ok(None)
+    }
+
+    // TODO: Discuss what the Bundle extras are for... doesn't appear to be available in Rust (yet?)
+    // ParcelableUStatus enableDispatching(in ParcelableUUri uri, in @nullable Bundle extras, IBinder clientToken);
+    fn enableDispatching(&self, uri: &ParcelableUUri, clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
+        Ok(ParcelableUStatus::default())
+    }
+
+    // TODO: Discuss what the Bundle extras are for... doesn't appear to be available in Rust (yet?)
+    // ParcelableUStatus disableDispatching(in ParcelableUUri uri, in @nullable Bundle extras, IBinder clientToken);
+    fn disableDispatching(&self, uri: &ParcelableUUri, clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
+        Ok(ParcelableUStatus::default())
+    }
 }
