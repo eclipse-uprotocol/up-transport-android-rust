@@ -24,6 +24,11 @@ declare_binder_interface! {
 pub trait IUBus: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUBus" }
   fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  fn r#unregisterClient(&self, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  fn r#send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  fn r#pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>>;
+  fn r#enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  fn r#disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
   fn getDefaultImpl() -> IUBusDefaultRef where Self: Sized {
     DEFAULT_IMPL.lock().unwrap().clone()
   }
@@ -34,11 +39,21 @@ pub trait IUBus: binder::Interface + Send {
 pub trait IUBusAsync<P>: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUBus" }
   fn r#registerClient<'a>(&'a self, _arg_packageName: &'a str, _arg_entity: &'a parcelable_stubs::ParcelableUEntity, _arg_clientToken: &'a binder::SpIBinder, _arg_flags: i32, _arg_listener: &'a binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>>;
+  fn r#unregisterClient<'a>(&'a self, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>>;
+  fn r#send<'a>(&'a self, _arg_message: &'a parcelable_stubs::ParcelableUMessage, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>>;
+  fn r#pull<'a>(&'a self, _arg_uri: &'a parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>>>;
+  fn r#enableDispatching<'a>(&'a self, _arg_uri: &'a parcelable_stubs::ParcelableUUri, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>>;
+  fn r#disableDispatching<'a>(&'a self, _arg_uri: &'a parcelable_stubs::ParcelableUUri, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>>;
 }
 #[::async_trait::async_trait]
 pub trait IUBusAsyncServer: binder::Interface + Send {
   fn get_descriptor() -> &'static str where Self: Sized { "org.eclipse.uprotocol.core.ubus.IUBus" }
   async fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  async fn r#unregisterClient(&self, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  async fn r#send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  async fn r#pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>>;
+  async fn r#enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
+  async fn r#disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus>;
 }
 impl BnUBus {
   /// Create a new async binder service.
@@ -63,6 +78,21 @@ impl BnUBus {
       fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
         self._rt.block_on(self._inner.r#registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener))
       }
+      fn r#unregisterClient(&self, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+        self._rt.block_on(self._inner.r#unregisterClient(_arg_clientToken))
+      }
+      fn r#send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+        self._rt.block_on(self._inner.r#send(_arg_message, _arg_clientToken))
+      }
+      fn r#pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>> {
+        self._rt.block_on(self._inner.r#pull(_arg_uri, _arg_count, _arg_clientToken))
+      }
+      fn r#enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+        self._rt.block_on(self._inner.r#enableDispatching(_arg_uri, _arg_clientToken))
+      }
+      fn r#disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+        self._rt.block_on(self._inner.r#disableDispatching(_arg_uri, _arg_clientToken))
+      }
     }
     let wrapped = Wrapper { _inner: inner, _rt: rt };
     Self::new_binder(wrapped, features)
@@ -72,9 +102,29 @@ pub trait IUBusDefault: Send + Sync {
   fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
     Err(binder::StatusCode::UNKNOWN_TRANSACTION.into())
   }
+  fn r#unregisterClient(&self, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    Err(binder::StatusCode::UNKNOWN_TRANSACTION.into())
+  }
+  fn r#send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    Err(binder::StatusCode::UNKNOWN_TRANSACTION.into())
+  }
+  fn r#pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>> {
+    Err(binder::StatusCode::UNKNOWN_TRANSACTION.into())
+  }
+  fn r#enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    Err(binder::StatusCode::UNKNOWN_TRANSACTION.into())
+  }
+  fn r#disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    Err(binder::StatusCode::UNKNOWN_TRANSACTION.into())
+  }
 }
 pub mod transactions {
   pub const r#registerClient: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 0;
+  pub const r#unregisterClient: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 1;
+  pub const r#send: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 2;
+  pub const r#pull: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 3;
+  pub const r#enableDispatching: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 4;
+  pub const r#disableDispatching: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 5;
 }
 pub type IUBusDefaultRef = Option<std::sync::Arc<dyn IUBusDefault>>;
 static DEFAULT_IMPL: std::sync::Mutex<IUBusDefaultRef> = std::sync::Mutex::new(None);
@@ -105,12 +155,127 @@ impl BpUBus {
     let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
     Ok(_aidl_return)
   }
+  fn build_parcel_unregisterClient(&self, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
+    let mut aidl_data = self.binder.prepare_transact()?;
+    aidl_data.write(_arg_clientToken)?;
+    Ok(aidl_data)
+  }
+  fn read_response_unregisterClient(&self, _arg_clientToken: &binder::SpIBinder, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    if let Err(binder::StatusCode::UNKNOWN_TRANSACTION) = _aidl_reply {
+      if let Some(_aidl_default_impl) = <Self as IUBus>::getDefaultImpl() {
+        return _aidl_default_impl.r#unregisterClient(_arg_clientToken);
+      }
+    }
+    let _aidl_reply = _aidl_reply?;
+    let _aidl_status: binder::Status = _aidl_reply.read()?;
+    if !_aidl_status.is_ok() { return Err(_aidl_status); }
+    let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
+    Ok(_aidl_return)
+  }
+  fn build_parcel_send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
+    let mut aidl_data = self.binder.prepare_transact()?;
+    aidl_data.write(_arg_message)?;
+    aidl_data.write(_arg_clientToken)?;
+    Ok(aidl_data)
+  }
+  fn read_response_send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    if let Err(binder::StatusCode::UNKNOWN_TRANSACTION) = _aidl_reply {
+      if let Some(_aidl_default_impl) = <Self as IUBus>::getDefaultImpl() {
+        return _aidl_default_impl.r#send(_arg_message, _arg_clientToken);
+      }
+    }
+    let _aidl_reply = _aidl_reply?;
+    let _aidl_status: binder::Status = _aidl_reply.read()?;
+    if !_aidl_status.is_ok() { return Err(_aidl_status); }
+    let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
+    Ok(_aidl_return)
+  }
+  fn build_parcel_pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
+    let mut aidl_data = self.binder.prepare_transact()?;
+    aidl_data.write(_arg_uri)?;
+    aidl_data.write(&_arg_count)?;
+    aidl_data.write(_arg_clientToken)?;
+    Ok(aidl_data)
+  }
+  fn read_response_pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &binder::SpIBinder, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>> {
+    if let Err(binder::StatusCode::UNKNOWN_TRANSACTION) = _aidl_reply {
+      if let Some(_aidl_default_impl) = <Self as IUBus>::getDefaultImpl() {
+        return _aidl_default_impl.r#pull(_arg_uri, _arg_count, _arg_clientToken);
+      }
+    }
+    let _aidl_reply = _aidl_reply?;
+    let _aidl_status: binder::Status = _aidl_reply.read()?;
+    if !_aidl_status.is_ok() { return Err(_aidl_status); }
+    let _aidl_return: Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>> = _aidl_reply.read()?;
+    Ok(_aidl_return)
+  }
+  fn build_parcel_enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
+    let mut aidl_data = self.binder.prepare_transact()?;
+    aidl_data.write(_arg_uri)?;
+    aidl_data.write(_arg_clientToken)?;
+    Ok(aidl_data)
+  }
+  fn read_response_enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    if let Err(binder::StatusCode::UNKNOWN_TRANSACTION) = _aidl_reply {
+      if let Some(_aidl_default_impl) = <Self as IUBus>::getDefaultImpl() {
+        return _aidl_default_impl.r#enableDispatching(_arg_uri, _arg_clientToken);
+      }
+    }
+    let _aidl_reply = _aidl_reply?;
+    let _aidl_status: binder::Status = _aidl_reply.read()?;
+    if !_aidl_status.is_ok() { return Err(_aidl_status); }
+    let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
+    Ok(_aidl_return)
+  }
+  fn build_parcel_disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
+    let mut aidl_data = self.binder.prepare_transact()?;
+    aidl_data.write(_arg_uri)?;
+    aidl_data.write(_arg_clientToken)?;
+    Ok(aidl_data)
+  }
+  fn read_response_disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    if let Err(binder::StatusCode::UNKNOWN_TRANSACTION) = _aidl_reply {
+      if let Some(_aidl_default_impl) = <Self as IUBus>::getDefaultImpl() {
+        return _aidl_default_impl.r#disableDispatching(_arg_uri, _arg_clientToken);
+      }
+    }
+    let _aidl_reply = _aidl_reply?;
+    let _aidl_status: binder::Status = _aidl_reply.read()?;
+    if !_aidl_status.is_ok() { return Err(_aidl_status); }
+    let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
+    Ok(_aidl_return)
+  }
 }
 impl IUBus for BpUBus {
   fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
     let _aidl_data = self.build_parcel_registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener)?;
     let _aidl_reply = self.binder.submit_transact(transactions::r#registerClient, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL);
     self.read_response_registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener, _aidl_reply)
+  }
+  fn r#unregisterClient(&self, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    let _aidl_data = self.build_parcel_unregisterClient(_arg_clientToken)?;
+    let _aidl_reply = self.binder.submit_transact(transactions::r#unregisterClient, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL);
+    self.read_response_unregisterClient(_arg_clientToken, _aidl_reply)
+  }
+  fn r#send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    let _aidl_data = self.build_parcel_send(_arg_message, _arg_clientToken)?;
+    let _aidl_reply = self.binder.submit_transact(transactions::r#send, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL);
+    self.read_response_send(_arg_message, _arg_clientToken, _aidl_reply)
+  }
+  fn r#pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>> {
+    let _aidl_data = self.build_parcel_pull(_arg_uri, _arg_count, _arg_clientToken)?;
+    let _aidl_reply = self.binder.submit_transact(transactions::r#pull, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL);
+    self.read_response_pull(_arg_uri, _arg_count, _arg_clientToken, _aidl_reply)
+  }
+  fn r#enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    let _aidl_data = self.build_parcel_enableDispatching(_arg_uri, _arg_clientToken)?;
+    let _aidl_reply = self.binder.submit_transact(transactions::r#enableDispatching, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL);
+    self.read_response_enableDispatching(_arg_uri, _arg_clientToken, _aidl_reply)
+  }
+  fn r#disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> {
+    let _aidl_data = self.build_parcel_disableDispatching(_arg_uri, _arg_clientToken)?;
+    let _aidl_reply = self.binder.submit_transact(transactions::r#disableDispatching, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL);
+    self.read_response_disableDispatching(_arg_uri, _arg_clientToken, _aidl_reply)
   }
 }
 impl<P: binder::BinderAsyncPool> IUBusAsync<P> for BpUBus {
@@ -127,9 +292,79 @@ impl<P: binder::BinderAsyncPool> IUBusAsync<P> for BpUBus {
       }
     )
   }
+  fn r#unregisterClient<'a>(&'a self, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>> {
+    let _aidl_data = match self.build_parcel_unregisterClient(_arg_clientToken) {
+      Ok(_aidl_data) => _aidl_data,
+      Err(err) => return Box::pin(std::future::ready(Err(err))),
+    };
+    let binder = self.binder.clone();
+    P::spawn(
+      move || binder.submit_transact(transactions::r#unregisterClient, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL),
+      move |_aidl_reply| async move {
+        self.read_response_unregisterClient(_arg_clientToken, _aidl_reply)
+      }
+    )
+  }
+  fn r#send<'a>(&'a self, _arg_message: &'a parcelable_stubs::ParcelableUMessage, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>> {
+    let _aidl_data = match self.build_parcel_send(_arg_message, _arg_clientToken) {
+      Ok(_aidl_data) => _aidl_data,
+      Err(err) => return Box::pin(std::future::ready(Err(err))),
+    };
+    let binder = self.binder.clone();
+    P::spawn(
+      move || binder.submit_transact(transactions::r#send, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL),
+      move |_aidl_reply| async move {
+        self.read_response_send(_arg_message, _arg_clientToken, _aidl_reply)
+      }
+    )
+  }
+  fn r#pull<'a>(&'a self, _arg_uri: &'a parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>>> {
+    let _aidl_data = match self.build_parcel_pull(_arg_uri, _arg_count, _arg_clientToken) {
+      Ok(_aidl_data) => _aidl_data,
+      Err(err) => return Box::pin(std::future::ready(Err(err))),
+    };
+    let binder = self.binder.clone();
+    P::spawn(
+      move || binder.submit_transact(transactions::r#pull, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL),
+      move |_aidl_reply| async move {
+        self.read_response_pull(_arg_uri, _arg_count, _arg_clientToken, _aidl_reply)
+      }
+    )
+  }
+  fn r#enableDispatching<'a>(&'a self, _arg_uri: &'a parcelable_stubs::ParcelableUUri, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>> {
+    let _aidl_data = match self.build_parcel_enableDispatching(_arg_uri, _arg_clientToken) {
+      Ok(_aidl_data) => _aidl_data,
+      Err(err) => return Box::pin(std::future::ready(Err(err))),
+    };
+    let binder = self.binder.clone();
+    P::spawn(
+      move || binder.submit_transact(transactions::r#enableDispatching, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL),
+      move |_aidl_reply| async move {
+        self.read_response_enableDispatching(_arg_uri, _arg_clientToken, _aidl_reply)
+      }
+    )
+  }
+  fn r#disableDispatching<'a>(&'a self, _arg_uri: &'a parcelable_stubs::ParcelableUUri, _arg_clientToken: &'a binder::SpIBinder) -> binder::BoxFuture<'a, binder::Result<parcelable_stubs::ParcelableUStatus>> {
+    let _aidl_data = match self.build_parcel_disableDispatching(_arg_uri, _arg_clientToken) {
+      Ok(_aidl_data) => _aidl_data,
+      Err(err) => return Box::pin(std::future::ready(Err(err))),
+    };
+    let binder = self.binder.clone();
+    P::spawn(
+      move || binder.submit_transact(transactions::r#disableDispatching, _aidl_data, binder::binder_impl::FLAG_PRIVATE_LOCAL),
+      move |_aidl_reply| async move {
+        self.read_response_disableDispatching(_arg_uri, _arg_clientToken, _aidl_reply)
+      }
+    )
+  }
 }
 impl IUBus for binder::binder_impl::Binder<BnUBus> {
   fn r#registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<parcelable_stubs::ParcelableUStatus> { self.0.r#registerClient(_arg_packageName, _arg_entity, _arg_clientToken, _arg_flags, _arg_listener) }
+  fn r#unregisterClient(&self, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> { self.0.r#unregisterClient(_arg_clientToken) }
+  fn r#send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> { self.0.r#send(_arg_message, _arg_clientToken) }
+  fn r#pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>>> { self.0.r#pull(_arg_uri, _arg_count, _arg_clientToken) }
+  fn r#enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> { self.0.r#enableDispatching(_arg_uri, _arg_clientToken) }
+  fn r#disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<parcelable_stubs::ParcelableUStatus> { self.0.r#disableDispatching(_arg_uri, _arg_clientToken) }
 }
 fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::TransactionCode, _aidl_data: &binder::binder_impl::BorrowedParcel<'_>, _aidl_reply: &mut binder::binder_impl::BorrowedParcel<'_>) -> std::result::Result<(), binder::StatusCode> {
   match _aidl_code {
@@ -145,6 +380,71 @@ fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::Trans
       let _arg_flags: i32 = _aidl_data.read()?;
       let _arg_listener: binder::Strong<dyn crate::binder_impls::IUListener::IUListener> = _aidl_data.read()?;
       let _aidl_return = _aidl_service.r#registerClient(&_arg_packageName, &_arg_entity, &_arg_clientToken, _arg_flags, &_arg_listener);
+      match &_aidl_return {
+        Ok(_aidl_return) => {
+          _aidl_reply.write(&binder::Status::from(binder::StatusCode::OK))?;
+          _aidl_reply.write(_aidl_return)?;
+        }
+        Err(_aidl_status) => _aidl_reply.write(_aidl_status)?
+      }
+      Ok(())
+    }
+    transactions::r#unregisterClient => {
+      let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
+      let _aidl_return = _aidl_service.r#unregisterClient(&_arg_clientToken);
+      match &_aidl_return {
+        Ok(_aidl_return) => {
+          _aidl_reply.write(&binder::Status::from(binder::StatusCode::OK))?;
+          _aidl_reply.write(_aidl_return)?;
+        }
+        Err(_aidl_status) => _aidl_reply.write(_aidl_status)?
+      }
+      Ok(())
+    }
+    transactions::r#send => {
+      let _arg_message: parcelable_stubs::ParcelableUMessage = _aidl_data.read()?;
+      let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
+      let _aidl_return = _aidl_service.r#send(&_arg_message, &_arg_clientToken);
+      match &_aidl_return {
+        Ok(_aidl_return) => {
+          _aidl_reply.write(&binder::Status::from(binder::StatusCode::OK))?;
+          _aidl_reply.write(_aidl_return)?;
+        }
+        Err(_aidl_status) => _aidl_reply.write(_aidl_status)?
+      }
+      Ok(())
+    }
+    transactions::r#pull => {
+      let _arg_uri: parcelable_stubs::ParcelableUUri = _aidl_data.read()?;
+      let _arg_count: i32 = _aidl_data.read()?;
+      let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
+      let _aidl_return = _aidl_service.r#pull(&_arg_uri, _arg_count, &_arg_clientToken);
+      match &_aidl_return {
+        Ok(_aidl_return) => {
+          _aidl_reply.write(&binder::Status::from(binder::StatusCode::OK))?;
+          _aidl_reply.write(_aidl_return)?;
+        }
+        Err(_aidl_status) => _aidl_reply.write(_aidl_status)?
+      }
+      Ok(())
+    }
+    transactions::r#enableDispatching => {
+      let _arg_uri: parcelable_stubs::ParcelableUUri = _aidl_data.read()?;
+      let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
+      let _aidl_return = _aidl_service.r#enableDispatching(&_arg_uri, &_arg_clientToken);
+      match &_aidl_return {
+        Ok(_aidl_return) => {
+          _aidl_reply.write(&binder::Status::from(binder::StatusCode::OK))?;
+          _aidl_reply.write(_aidl_return)?;
+        }
+        Err(_aidl_status) => _aidl_reply.write(_aidl_status)?
+      }
+      Ok(())
+    }
+    transactions::r#disableDispatching => {
+      let _arg_uri: parcelable_stubs::ParcelableUUri = _aidl_data.read()?;
+      let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
+      let _aidl_return = _aidl_service.r#disableDispatching(&_arg_uri, &_arg_clientToken);
       match &_aidl_return {
         Ok(_aidl_return) => {
           _aidl_reply.write(&binder::Status::from(binder::StatusCode::OK))?;
