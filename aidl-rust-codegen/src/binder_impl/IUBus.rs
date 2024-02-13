@@ -245,7 +245,9 @@ impl BpUBus {
   }
   fn build_parcel_disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
+    // Pack ParcelableUUri using Protobuf - Start - TODO
     aidl_data.write(_arg_uri)?;
+    // Pack ParcelableUUri using Protobuf - End
     aidl_data.write(_arg_clientToken)?;
     Ok(aidl_data)
   }
