@@ -153,7 +153,10 @@ impl BpUBus {
     let _aidl_status: binder::Status = _aidl_reply.read()?;
     if !_aidl_status.is_ok() { return Err(_aidl_status); }
     // Unpack ParcelableUStatus using Protobuf - Start - TODO
-    let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
+    let _size = _aidl_reply.read::<i32>()?;
+    let bytes = _aidl_reply.read::<Vec<u8>>()?;
+    let ustatus = up_rust::uprotocol::UStatus::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
+    let _aidl_return = parcelable_stubs::ParcelableUStatus::from(ustatus);
     // Unpack ParcelableUStatus using Protobuf - End
     Ok(_aidl_return)
   }
