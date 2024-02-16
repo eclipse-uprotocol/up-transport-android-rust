@@ -38,7 +38,7 @@ dependencies = [
  "lazy_static",
  "protobuf",
  "tokio",
- "uprotocol-sdk",
+ "up-rust",
 ]
 
 [[package]]
@@ -575,7 +575,7 @@ dependencies = [
  "lazy_static",
  "protobuf",
  "tokio",
- "uprotocol-sdk",
+ "up-rust",
 ]
 
 [[package]]
@@ -591,7 +591,7 @@ dependencies = [
  "lazy_static",
  "protobuf",
  "tokio",
- "uprotocol-sdk",
+ "up-rust",
 ]
 
 [[package]]
@@ -1291,9 +1291,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
 
 [[package]]
-name = "uprotocol-sdk"
+name = "up-rust"
 version = "0.1.5"
-source = "git+https://github.com/PLeVasseur/uprotocol-rust_fork.git?branch=feature/protobuf_id_u32_to_micro_serializer_u16_checks#3d0f30f5b286e81d0239f65a0a224a29f55fd822"
+source = "git+https://github.com/eclipse-uprotocol/up-rust?branch=main#cb5deec4581eb6c386941f54e7e33488060fb36a"
 dependencies = [
  "async-trait",
  "bytes",

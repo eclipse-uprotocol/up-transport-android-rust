@@ -8,17 +8,20 @@ pub fn run() -> anyhow::Result<()> {
     let test_iulistener_service: Strong<dyn IUListener> = binder::get_interface("test-iulistener-service").unwrap();
     println!("Do onReceive()");
     let umessage = UMessage {
-        source: Some(UUri {
-            authority: Some(UAuthority {
-                name: Some("my_vin".to_owned()),
-                ..Default::default()
-            }).into(),
-            entity: Some(UEntity {
-                name: "door".to_owned(),
-                ..Default::default()
-            }).into(),
-            resource: Some(UResource {
-                name: "front_left".to_owned(),
+        attributes: Some(UAttributes {
+            source: Some(UUri {
+                authority: Some(UAuthority {
+                    name: Some("my_vin".to_owned()),
+                    ..Default::default()
+                }).into(),
+                entity: Some(UEntity {
+                    name: "door".to_owned(),
+                    ..Default::default()
+                }).into(),
+                resource: Some(UResource {
+                    name: "front_left".to_owned(),
+                    ..Default::default()
+                }).into(),
                 ..Default::default()
             }).into(),
             ..Default::default()

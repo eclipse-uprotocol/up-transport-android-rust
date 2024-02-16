@@ -14,14 +14,17 @@ impl Interface for TestCallingClientIUListenerService {}
 impl IUBus for TestCallingClientIUListenerService {
     fn registerClient(&self, packageName: &str, entity: &ParcelableUEntity, clientToken: &SpIBinder, flags: i32, listener: &Strong<(dyn IUListener + 'static)>) -> binder::Result<ParcelableUStatus> {
         let umessage = UMessage {
-            source: Some(UUri {
-                authority: Some(UAuthority {
-                    name: Some("super_cool_authority".to_owned()),
-                    ..Default::default()
-                }).into(),
-                entity: Some(entity.as_ref().clone()).into(),
-                resource: Some(UResource {
-                    name: "super_cool_resource".to_owned(),
+            attributes: Some(UAttributes {
+                source: Some(UUri {
+                    authority: Some(UAuthority {
+                        name: Some("super_cool_authority".to_owned()),
+                        ..Default::default()
+                    }).into(),
+                    entity: Some(entity.as_ref().clone()).into(),
+                    resource: Some(UResource {
+                        name: "super_cool_resource".to_owned(),
+                        ..Default::default()
+                    }).into(),
                     ..Default::default()
                 }).into(),
                 ..Default::default()
