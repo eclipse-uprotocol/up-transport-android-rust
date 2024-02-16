@@ -36,8 +36,4 @@ interface IUBus {
     @nullable ParcelableUMessage[] pull(in ParcelableUUri uri, int count, IBinder clientToken);
     ParcelableUStatus enableDispatching(in ParcelableUUri uri, IBinder clientToken);
     ParcelableUStatus disableDispatching(in ParcelableUUri uri, IBinder clientToken);
-    // Bundle may not be available in Rust yet. Can't seem to find an implementation for it in Rust
-    //  @nullable ParcelableUMessage[] pull(in ParcelableUUri uri, int count, in @nullable Bundle extras, IBinder clientToken);
-    //  ParcelableUStatus enableDispatching(in ParcelableUUri uri, in @nullable Bundle extras, IBinder clientToken);
-    //  ParcelableUStatus disableDispatching(in ParcelableUUri uri, in @nullable Bundle extras, IBinder clientToken);
 }

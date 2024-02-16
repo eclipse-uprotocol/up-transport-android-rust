@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
 
-use crate::{client, server};
+use crate::{client_rust, client_java, server};
 
 #[derive(Parser, Debug)]
 #[command(author, about, long_about = None)]
@@ -14,7 +14,9 @@ struct Args {
 enum Commands {
     Server,
 
-    Client,
+    ClientRust,
+
+    ClientJava,
 }
 
 pub fn run() -> Result<()> {
@@ -22,7 +24,8 @@ pub fn run() -> Result<()> {
 
     let result = match cli.command {
         Commands::Server => server::run(),
-        Commands::Client => client::run(),
+        Commands::ClientRust => client_rust::run(),
+        Commands::ClientJava => client_java::run()
     };
 
     if let Err(e) = &result {
