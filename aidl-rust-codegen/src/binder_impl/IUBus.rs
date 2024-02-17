@@ -167,13 +167,7 @@ impl BpUBus {
     let _aidl_reply = _aidl_reply?;
     let _aidl_status: binder::Status = _aidl_reply.read()?;
     if !_aidl_status.is_ok() { return Err(_aidl_status); }
-    // Unpack ParcelableUStatus using Protobuf - Start - TODO
     let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
-//     let _size = _aidl_reply.read::<i32>()?;
-//     let bytes = _aidl_reply.read::<Vec<u8>>()?;
-//     let ustatus = up_rust::uprotocol::UStatus::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
-//     let _aidl_return = parcelable_stubs::ParcelableUStatus::from(ustatus);
-    // Unpack ParcelableUStatus using Protobuf - End
     Ok(_aidl_return)
   }
   fn build_parcel_unregisterClient(&self, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
@@ -190,16 +184,12 @@ impl BpUBus {
     let _aidl_reply = _aidl_reply?;
     let _aidl_status: binder::Status = _aidl_reply.read()?;
     if !_aidl_status.is_ok() { return Err(_aidl_status); }
-    // Unpack ParcelableUStatus using Protobuf - Start - TODO
     let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
-    // Unpack ParcelableUStatus using Protobuf - End
     Ok(_aidl_return)
   }
   fn build_parcel_send(&self, _arg_message: &parcelable_stubs::ParcelableUMessage, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
-    // Pack ParcelableUMessage using Protobuf - Start - TODO
     aidl_data.write(_arg_message)?;
-    // Pack ParcelableUMessage using Protobuf - End
     aidl_data.write(_arg_clientToken)?;
     Ok(aidl_data)
   }
@@ -212,16 +202,12 @@ impl BpUBus {
     let _aidl_reply = _aidl_reply?;
     let _aidl_status: binder::Status = _aidl_reply.read()?;
     if !_aidl_status.is_ok() { return Err(_aidl_status); }
-    // Unpack ParcelableUStatus using Protobuf - Start - TODO
     let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
-    // Unpack ParcelableUStatus using Protobuf - End
     Ok(_aidl_return)
   }
   fn build_parcel_pull(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_count: i32, _arg_flags: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
-    // Pack ParcelableUUri using Protobuf - Start - TODO
     aidl_data.write(_arg_uri)?;
-    // Pack ParcelableUUri using Protobuf - End
     aidl_data.write(&_arg_count)?;
     aidl_data.write(&_arg_flags)?;
     aidl_data.write(_arg_clientToken)?;
@@ -236,16 +222,12 @@ impl BpUBus {
     let _aidl_reply = _aidl_reply?;
     let _aidl_status: binder::Status = _aidl_reply.read()?;
     if !_aidl_status.is_ok() { return Err(_aidl_status); }
-    // Unpack Option<Vec<ParcelableUMessage> using Protobuf - Start - TODO
     let _aidl_return: Option<Vec<Option<parcelable_stubs::ParcelableUMessage>>> = _aidl_reply.read()?;
-    // Unpack Option<Vec<ParcelableUMessage> using Protobuf - End
     Ok(_aidl_return)
   }
   fn build_parcel_enableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_flags: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
-    // Pack ParcelableUUri using Protobuf - Start - TODO
     aidl_data.write(_arg_uri)?;
-    // Pack ParcelableUUri using Protobuf - End
     aidl_data.write(&_arg_flags)?;
     aidl_data.write(_arg_clientToken)?;
     Ok(aidl_data)
@@ -259,16 +241,12 @@ impl BpUBus {
     let _aidl_reply = _aidl_reply?;
     let _aidl_status: binder::Status = _aidl_reply.read()?;
     if !_aidl_status.is_ok() { return Err(_aidl_status); }
-    // Unpack ParcelableUStatus using Protobuf - Start - TODO
     let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
-    // Unpack ParcelableUStatus using Protobuf - End
     Ok(_aidl_return)
   }
   fn build_parcel_disableDispatching(&self, _arg_uri: &parcelable_stubs::ParcelableUUri, _arg_flags: i32, _arg_clientToken: &binder::SpIBinder) -> binder::Result<binder::binder_impl::Parcel> {
     let mut aidl_data = self.binder.prepare_transact()?;
-    // Pack ParcelableUUri using Protobuf - Start - TODO
     aidl_data.write(_arg_uri)?;
-    // Pack ParcelableUUri using Protobuf - End
     aidl_data.write(&_arg_flags)?;
     aidl_data.write(_arg_clientToken)?;
     Ok(aidl_data)
@@ -282,9 +260,7 @@ impl BpUBus {
     let _aidl_reply = _aidl_reply?;
     let _aidl_status: binder::Status = _aidl_reply.read()?;
     if !_aidl_status.is_ok() { return Err(_aidl_status); }
-    // Unpack ParcelableUStatus using Protobuf - Start - TODO
     let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
-    // Unpack ParcelableUStatus using Protobuf - End
     Ok(_aidl_return)
   }
 }
@@ -439,9 +415,7 @@ fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::Trans
       Ok(())
     }
     transactions::r#send => {
-      // Unpack ParcelableUMessage using Protobuf - Start - TODO
       let _arg_message: parcelable_stubs::ParcelableUMessage = _aidl_data.read()?;
-      // Unpack ParcelableUMessage using Protobuf - End
       let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
       let _aidl_return = _aidl_service.r#send(&_arg_message, &_arg_clientToken);
       match &_aidl_return {
@@ -454,9 +428,7 @@ fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::Trans
       Ok(())
     }
     transactions::r#pull => {
-      // Unpack ParcelableUUri using Protobuf - Start - TODO
       let _arg_uri: parcelable_stubs::ParcelableUUri = _aidl_data.read()?;
-      // Unpack ParcelableUUri using Protobuf - End
       let _arg_count: i32 = _aidl_data.read()?;
       let _arg_flags: i32 = _aidl_data.read()?;
       let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
@@ -471,9 +443,7 @@ fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::Trans
       Ok(())
     }
     transactions::r#enableDispatching => {
-      // Unpack ParcelableUUri using Protobuf - Start - TODO
       let _arg_uri: parcelable_stubs::ParcelableUUri = _aidl_data.read()?;
-      // Unpack ParcelableUUri using Protobuf - End<
       let _arg_flags: i32 = _aidl_data.read()?;
       let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
       let _aidl_return = _aidl_service.r#enableDispatching(&_arg_uri, _arg_flags, &_arg_clientToken);
@@ -487,9 +457,7 @@ fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::Trans
       Ok(())
     }
     transactions::r#disableDispatching => {
-      // Unpack ParcelableUUri using Protobuf - Start - TODO
       let _arg_uri: parcelable_stubs::ParcelableUUri = _aidl_data.read()?;
-      // Unpack ParcelableUUri using Protobuf - End
       let _arg_flags: i32 = _aidl_data.read()?;
       let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
       let _aidl_return = _aidl_service.r#disableDispatching(&_arg_uri, _arg_flags, &_arg_clientToken);
