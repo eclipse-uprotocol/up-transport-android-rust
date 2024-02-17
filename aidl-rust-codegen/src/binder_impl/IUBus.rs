@@ -144,24 +144,27 @@ impl BpUBus {
     info!("before packageName: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(_arg_packageName)?;
     info!("after packageName: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    // Pack ParcelableUEntity using Protobuf - Start
-    let uentity = _arg_entity.as_ref();
-    let bytes = uentity.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
-    // TODO: PELE - Remove temporary debugging
-    info!("uentity size: {}", bytes.len());
-    info!("uentity bytes: {:?}", &bytes);
-    info!("before any uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    info!("before writing an extra 1 to mimic writeTypedObject from Java Parcel: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    aidl_data.write(&(1 as i32))?;
-    info!("after writing an extra 1 to mimic writeTypedObject from Java Parcel: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    info!("before uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    aidl_data.write(&(bytes.len() as i32))?;
-    info!("after uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    info!("before uentity bytes len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    aidl_data.write(&bytes)?;
-    info!("after uentity bytes len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    info!("after all uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-    // Pack ParcelableUEntity using Protobuf - End
+    info!("before using write() on uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+    aidl_data.write(_arg_entity)?;
+    info!("after using write() on uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     // Pack ParcelableUEntity using Protobuf - Start
+//     let uentity = _arg_entity.as_ref();
+//     let bytes = uentity.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
+//     // TODO: PELE - Remove temporary debugging
+//     info!("uentity size: {}", bytes.len());
+//     info!("uentity bytes: {:?}", &bytes);
+//     info!("before any uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     info!("before writing an extra 1 to mimic writeTypedObject from Java Parcel: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     aidl_data.write(&(1 as i32))?;
+//     info!("after writing an extra 1 to mimic writeTypedObject from Java Parcel: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     info!("before uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     aidl_data.write(&(bytes.len() as i32))?;
+//     info!("after uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     info!("before uentity bytes len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     aidl_data.write(&bytes)?;
+//     info!("after uentity bytes len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     info!("after all uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+//     // Pack ParcelableUEntity using Protobuf - End
     info!("before clientToken len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(_arg_clientToken)?;
     info!("after clientToken len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
