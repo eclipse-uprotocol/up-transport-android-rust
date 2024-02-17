@@ -151,6 +151,9 @@ impl BpUBus {
     info!("uentity size: {}", bytes.len());
     info!("uentity bytes: {:?}", &bytes);
     info!("before any uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+    info!("before writing an extra 1 to mimic writeTypedObject from Java Parcel: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+    aidl_data.write(&(1 as i32))?;
+    info!("after writing an extra 1 to mimic writeTypedObject from Java Parcel: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     info!("before uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(&(bytes.len() as i32))?;
     info!("after uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
