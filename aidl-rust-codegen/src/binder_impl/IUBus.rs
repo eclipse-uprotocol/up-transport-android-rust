@@ -13,6 +13,11 @@ use binder::StatusCode;
 use crate::parcelable_stubs;
 use protobuf::Message;
 
+extern crate android_logger;
+
+use log::LevelFilter;
+use android_logger::Config;
+
 declare_binder_interface! {
   IUBus["org.eclipse.uprotocol.core.ubus.IUBus"] {
     native: BnUBus(on_transact),
@@ -130,20 +135,39 @@ pub type IUBusDefaultRef = Option<std::sync::Arc<dyn IUBusDefault>>;
 static DEFAULT_IMPL: std::sync::Mutex<IUBusDefaultRef> = std::sync::Mutex::new(None);
 impl BpUBus {
   fn build_parcel_registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<binder::binder_impl::Parcel> {
+
+    android_logger::init_once(
+            Config::default().with_max_level(LevelFilter::Trace),
+        );
+
     let mut aidl_data = self.binder.prepare_transact()?;
+    info!("before packageName: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(_arg_packageName)?;
+    info!("after packageName: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     // Pack ParcelableUEntity using Protobuf - Start
     let uentity = _arg_entity.as_ref();
     let bytes = uentity.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
     // TODO: PELE - Remove temporary debugging
-    println!("uentity size: {}", bytes.len());
-    println!("uentity bytes: {:?}", &bytes);
+    info!("uentity size: {}", bytes.len());
+    info!("uentity bytes: {:?}", &bytes);
+    info!("before any uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+    info!("before uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(&(bytes.len() as i32))?;
+    info!("after uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+    info!("before uentity bytes len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(&bytes)?;
+    info!("after uentity bytes len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+    info!("after all uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     // Pack ParcelableUEntity using Protobuf - End
+    info!("before clientToken len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(_arg_clientToken)?;
+    info!("after clientToken len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+    info!("before flags len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(&_arg_flags)?;
+    info!("after flags len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
+    info!("before listener len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(_arg_listener)?;
+    info!("after listener len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     Ok(aidl_data)
   }
   fn read_response_registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>, _aidl_reply: std::result::Result<binder::binder_impl::Parcel, binder::StatusCode>) -> binder::Result<parcelable_stubs::ParcelableUStatus> {

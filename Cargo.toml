@@ -43,3 +43,4 @@ tokio = { version = "1.25.0", features = ["full"] }
 up-rust = { git = "https://github.com/eclipse-uprotocol/up-rust", branch = "main" }
 # upstream
 # up-rust = { package = "uprotocol-sdk", git = "https://github.com/eclipse-uprotocol/up-rust.git", branch = "main" }
+
