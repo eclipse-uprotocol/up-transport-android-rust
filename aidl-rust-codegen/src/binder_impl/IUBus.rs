@@ -2,7 +2,7 @@
  * This file is auto-generated.  DO NOT MODIFY.
  * Using: out/host/linux-x86/bin/aidl --lang=rust -Weverything -Wno-missing-permission-annotation --min_sdk_version current --ninja -d out/soong/.intermediates/external/rust/up-client-android-rust/aidl-rust-codegen/src/aidl/org.eclipse.uprotocol.core.ubus.iubus-rust-source/gen/org/eclipse/uprotocol/core/ubus/IUBus.rs.d -o out/soong/.intermediates/external/rust/up-client-android-rust/aidl-rust-codegen/src/aidl/org.eclipse.uprotocol.core.ubus.iubus-rust-source/gen -Nexternal/rust/up-client-android-rust/aidl-rust-codegen/src/aidl external/rust/up-client-android-rust/aidl-rust-codegen/src/aidl/org/eclipse/uprotocol/core/ubus/IUBus.aidl
  */
-#![forbid(unsafe_code)]
+// #![forbid(unsafe_code)]
 #![cfg_attr(rustfmt, rustfmt_skip)]
 #![allow(non_upper_case_globals)]
 #![allow(non_snake_case)]
@@ -135,8 +135,19 @@ impl BpUBus {
     // Pack ParcelableUEntity using Protobuf - Start
     let uentity = _arg_entity.as_ref();
     let bytes = uentity.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
+    // TODO: PELE - Remove temporary debugging
+    println!("uentity size: {}", bytes.len());
+    println!("uentity bytes: {:?}", &bytes);
     aidl_data.write(&(bytes.len() as i32))?;
+    let before_writing_uentity_bytes = aidl_data.get_data_position();
     aidl_data.write(&bytes)?;
+    unsafe { aidl_data.set_data_position(before_writing_uentity_bytes); };
+    let bytes_check = aidl_data.read::<Vec<u8>>()?;
+    println!("uentity bytes check: {:?}", &bytes_check);
+    unsafe { aidl_data.set_data_position(before_writing_uentity_bytes); };
+    aidl_data.write(&bytes_check);
+    let parcelable_uentity_bytes =
+
     // Pack ParcelableUEntity using Protobuf - End
     aidl_data.write(_arg_clientToken)?;
     aidl_data.write(&_arg_flags)?;

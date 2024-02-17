@@ -23,12 +23,13 @@ pub fn run() -> anyhow::Result<()> {
     let test_calling_client_iulistener_service: Strong<dyn IUBus> = binder::get_interface("test-calling-client-iulistener-service").unwrap();
 
     let my_package_name = "super_cool_client";
-    let my_entity = UEntity {
-        name: "super_cool_name".to_owned(),
-        ..Default::default()
+    let uentity = UEntity {
+            name: "ustreamer_glue".to_string(),
+            version_major: Some(1),
+            ..Default::default()
     };
 
-    println!("my_entity we're sending over with registerClient():\n{:?}", my_entity);
+    println!("my_entity we're sending over with registerClient():\n{:?}", uentity);
 
     let my_flags: i32 = 0;
 
@@ -39,7 +40,7 @@ pub fn run() -> anyhow::Result<()> {
     let client_token = Binder::new(()).as_binder();
 
     println!("Call registerClient()");
-    let parcelable_ustatus = test_calling_client_iulistener_service.registerClient(&my_package_name, &my_entity.into(), &client_token, my_flags, &my_iulistener_binder);
+    let parcelable_ustatus = test_calling_client_iulistener_service.registerClient(&my_package_name, &uentity.into(), &client_token, my_flags, &my_iulistener_binder);
     binder::ProcessState::join_thread_pool();
 
     anyhow::Ok(())
