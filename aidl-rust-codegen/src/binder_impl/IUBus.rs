@@ -147,24 +147,6 @@ impl BpUBus {
     info!("before using write() on uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(_arg_entity)?;
     info!("after using write() on uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     // Pack ParcelableUEntity using Protobuf - Start
-//     let uentity = _arg_entity.as_ref();
-//     let bytes = uentity.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
-//     // TODO: PELE - Remove temporary debugging
-//     info!("uentity size: {}", bytes.len());
-//     info!("uentity bytes: {:?}", &bytes);
-//     info!("before any uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     info!("before writing an extra 1 to mimic writeTypedObject from Java Parcel: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     aidl_data.write(&(1 as i32))?;
-//     info!("after writing an extra 1 to mimic writeTypedObject from Java Parcel: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     info!("before uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     aidl_data.write(&(bytes.len() as i32))?;
-//     info!("after uentity len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     info!("before uentity bytes len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     aidl_data.write(&bytes)?;
-//     info!("after uentity bytes len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     info!("after all uentity: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
-//     // Pack ParcelableUEntity using Protobuf - End
     info!("before clientToken len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
     aidl_data.write(_arg_clientToken)?;
     info!("after clientToken len: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
@@ -186,10 +168,11 @@ impl BpUBus {
     let _aidl_status: binder::Status = _aidl_reply.read()?;
     if !_aidl_status.is_ok() { return Err(_aidl_status); }
     // Unpack ParcelableUStatus using Protobuf - Start - TODO
-    let _size = _aidl_reply.read::<i32>()?;
-    let bytes = _aidl_reply.read::<Vec<u8>>()?;
-    let ustatus = up_rust::uprotocol::UStatus::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
-    let _aidl_return = parcelable_stubs::ParcelableUStatus::from(ustatus);
+    let _aidl_return: parcelable_stubs::ParcelableUStatus = _aidl_reply.read()?;
+//     let _size = _aidl_reply.read::<i32>()?;
+//     let bytes = _aidl_reply.read::<Vec<u8>>()?;
+//     let ustatus = up_rust::uprotocol::UStatus::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
+//     let _aidl_return = parcelable_stubs::ParcelableUStatus::from(ustatus);
     // Unpack ParcelableUStatus using Protobuf - End
     Ok(_aidl_return)
   }
@@ -429,12 +412,7 @@ fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::Trans
   match _aidl_code {
     transactions::r#registerClient => {
       let _arg_packageName: String = _aidl_data.read()?;
-      // Unpack ParcelableUEntity using Protobuf - Start
-      let _size = _aidl_data.read::<i32>()?;
-      let bytes = _aidl_data.read::<Vec<u8>>()?;
-      let uentity = up_rust::uprotocol::UEntity::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
-      let _arg_entity = parcelable_stubs::ParcelableUEntity::from(uentity);
-      // Unpack ParcelableUEntity using Protobuf - End
+      let _arg_entity: parcelable_stubs::ParcelableUEntity = _aidl_data.read()?;
       let _arg_clientToken: binder::SpIBinder = _aidl_data.read()?;
       let _arg_flags: i32 = _aidl_data.read()?;
       let _arg_listener: binder::Strong<dyn crate::binder_impls::IUListener::IUListener> = _aidl_data.read()?;
