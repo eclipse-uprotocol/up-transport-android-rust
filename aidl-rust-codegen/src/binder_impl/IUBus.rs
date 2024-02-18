@@ -13,11 +13,6 @@ use binder::StatusCode;
 use crate::parcelable_stubs;
 use protobuf::Message;
 
-extern crate android_logger;
-
-use log::LevelFilter;
-use android_logger::Config;
-
 declare_binder_interface! {
   IUBus["org.eclipse.uprotocol.core.ubus.IUBus"] {
     native: BnUBus(on_transact),
@@ -135,10 +130,6 @@ pub type IUBusDefaultRef = Option<std::sync::Arc<dyn IUBusDefault>>;
 static DEFAULT_IMPL: std::sync::Mutex<IUBusDefaultRef> = std::sync::Mutex::new(None);
 impl BpUBus {
   fn build_parcel_registerClient(&self, _arg_packageName: &str, _arg_entity: &parcelable_stubs::ParcelableUEntity, _arg_clientToken: &binder::SpIBinder, _arg_flags: i32, _arg_listener: &binder::Strong<dyn crate::binder_impls::IUListener::IUListener>) -> binder::Result<binder::binder_impl::Parcel> {
-
-    android_logger::init_once(
-            Config::default().with_max_level(LevelFilter::Trace),
-        );
 
     let mut aidl_data = self.binder.prepare_transact()?;
     info!("before packageName: data_position: {} data_size: {}", aidl_data.get_data_position(), aidl_data.get_data_size());
