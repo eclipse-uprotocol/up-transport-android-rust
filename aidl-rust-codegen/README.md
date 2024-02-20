@@ -148,4 +148,5 @@ Note that in order to build in this fashion you must have already installed
       /home/<your-username>/Android/Sdk/ndk/<ndk-version>/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/29/
       ```
   * _Note_ how the architecture in the `cargo-ndk` command lines up with where
-    we look in Soong's build output and which API level folder we place it in.
+    we look in Soong's build output per architecture and which API level 
+    folder we place `libbinder_ndk.so` in when put in our `ANDROID_NDK_HOME`
