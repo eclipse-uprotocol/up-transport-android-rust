@@ -90,7 +90,9 @@ impl UnstructuredParcelable for ParcelableUStatus {
 impl UnstructuredParcelable for ParcelableUStatus {
     fn write_to_parcel(&self, parcel: &mut BorrowedParcel) -> Result<(), StatusCode> {
         let ustatus = &self.0;
-        let bytes = ustatus.write_to_bytes().map_err(|_e| { StatusCode::BAD_VALUE })?;
+        let bytes = ustatus
+            .write_to_bytes()
+            .map_err(|_e| StatusCode::BAD_VALUE)?;
         parcel.write(&(bytes.len() as i32))?;
         parcel.write(&bytes)?;
         Ok(())
@@ -99,7 +101,8 @@ impl UnstructuredParcelable for ParcelableUStatus {
     fn from_parcel(parcel: &BorrowedParcel) -> Result<Self, StatusCode> {
         let _size = parcel.read::<i32>()?;
         let bytes = parcel.read::<Vec<u8>>()?;
-        let ustatus = up_rust::uprotocol::UStatus::parse_from_bytes(&bytes).map_err(|_e| { StatusCode::BAD_VALUE })?;
+        let ustatus = up_rust::uprotocol::UStatus::parse_from_bytes(&bytes)
+            .map_err(|_e| StatusCode::BAD_VALUE)?;
         let parcelable_ustatus = ParcelableUStatus(ustatus);
         Ok(parcelable_ustatus)
     }

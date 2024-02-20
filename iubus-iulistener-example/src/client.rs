@@ -1,12 +1,10 @@
-use binder::{BinderFeatures, Interface, Strong,
-    binder_impl::Binder
-};
+use binder::{binder_impl::Binder, BinderFeatures, Interface, Strong};
 
-use aidl_rust_codegen::binder_impls::IUListener::{IUListener, BnUListener};
-use aidl_rust_codegen::binder_impls::IUBus::{IUBus};
-use aidl_rust_codegen::parcelable_stubs::{ParcelableUMessage};
+use aidl_rust_codegen::binder_impls::IUBus::IUBus;
+use aidl_rust_codegen::binder_impls::IUListener::{BnUListener, IUListener};
+use aidl_rust_codegen::parcelable_stubs::ParcelableUMessage;
 
-use up_rust::uprotocol::{UEntity};
+use up_rust::uprotocol::UEntity;
 
 pub struct MyIUListener;
 
@@ -20,16 +18,20 @@ impl IUListener for MyIUListener {
 }
 
 pub fn run() -> anyhow::Result<()> {
-    let test_calling_client_iulistener_service: Strong<dyn IUBus> = binder::get_interface("test-calling-client-iulistener-service").unwrap();
+    let test_calling_client_iulistener_service: Strong<dyn IUBus> =
+        binder::get_interface("test-calling-client-iulistener-service").unwrap();
 
     let my_package_name = "super_cool_client";
     let uentity = UEntity {
-            name: "ustreamer_glue".to_string(),
-            version_major: Some(1),
-            ..Default::default()
+        name: "ustreamer_glue".to_string(),
+        version_major: Some(1),
+        ..Default::default()
     };
 
-    println!("my_entity we're sending over with registerClient():\n{:?}", uentity);
+    println!(
+        "my_entity we're sending over with registerClient():\n{:?}",
+        uentity
+    );
 
     let my_flags: i32 = 0;
 
@@ -40,7 +42,13 @@ pub fn run() -> anyhow::Result<()> {
     let client_token = Binder::new(()).as_binder();
 
     println!("Call registerClient()");
-    let _parcelable_ustatus = test_calling_client_iulistener_service.registerClient(&my_package_name, &uentity.into(), &client_token, my_flags, &my_iulistener_binder);
+    let _parcelable_ustatus = test_calling_client_iulistener_service.registerClient(
+        &my_package_name,
+        &uentity.into(),
+        &client_token,
+        my_flags,
+        &my_iulistener_binder,
+    );
     binder::ProcessState::join_thread_pool();
 
     anyhow::Ok(())
