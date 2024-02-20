@@ -2,7 +2,7 @@ use binder::Strong;
 use aidl_rust_codegen::binder_impls::IUListener::{IUListener};
 use aidl_rust_codegen::parcelable_stubs::ParcelableUMessage;
 
-use up_rust::uprotocol::{UAttributes, UAuthority, UEntity, UMessage, UPayload, UResource, UUri};
+use up_rust::uprotocol::{UAttributes, UAuthority, UEntity, UMessage, UResource, UUri};
 
 pub fn run() -> anyhow::Result<()> {
     let test_iulistener_service: Strong<dyn IUListener> = binder::get_interface("test-iulistener-service").unwrap();

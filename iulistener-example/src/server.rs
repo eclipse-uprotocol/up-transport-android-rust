@@ -1,9 +1,7 @@
 use binder::BinderFeatures;
 use aidl_rust_codegen::binder_impls::IUListener::{BnUListener, IUListener};
 use aidl_rust_codegen::parcelable_stubs::ParcelableUMessage;
-use binder::{Interface, Result as BinderResult,
-             binder_impl::{BorrowedParcel, UnstructuredParcelable},
-};
+use binder::Interface;
 
 pub struct TestIUListenerService;
 

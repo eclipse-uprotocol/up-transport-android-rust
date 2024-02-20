@@ -1,18 +1,17 @@
 use binder::{BinderFeatures, SpIBinder, Strong};
-use aidl_rust_codegen::binder_impls::IUListener::{BnUListener, IUListener};
+use aidl_rust_codegen::binder_impls::IUListener::{IUListener};
 use aidl_rust_codegen::binder_impls::IUBus::{BnUBus, IUBus};
 use aidl_rust_codegen::parcelable_stubs::{ParcelableUMessage, ParcelableUEntity, ParcelableUStatus, ParcelableUUri};
-use binder::{Interface, Result as BinderResult,
-             binder_impl::{BorrowedParcel, UnstructuredParcelable},
+use binder::{Interface,
 };
-use up_rust::uprotocol::{UAttributes, UAuthority, UEntity, UMessage, UPayload, UResource, UUri};
+use up_rust::uprotocol::{UAttributes, UAuthority, UMessage, UResource, UUri};
 
 pub struct TestCallingClientIUListenerService;
 
 impl Interface for TestCallingClientIUListenerService {}
 
 impl IUBus for TestCallingClientIUListenerService {
-    fn registerClient(&self, packageName: &str, entity: &ParcelableUEntity, clientToken: &SpIBinder, flags: i32, listener: &Strong<(dyn IUListener + 'static)>) -> binder::Result<ParcelableUStatus> {
+    fn registerClient(&self, _packageName: &str, entity: &ParcelableUEntity, _clientToken: &SpIBinder, _flags: i32, listener: &Strong<(dyn IUListener + 'static)>) -> binder::Result<ParcelableUStatus> {
         let umessage = UMessage {
             attributes: Some(UAttributes {
                 source: Some(UUri {
@@ -40,29 +39,23 @@ impl IUBus for TestCallingClientIUListenerService {
         Ok(ParcelableUStatus::default())
     }
 
-    fn unregisterClient(&self, clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
+    fn unregisterClient(&self, _clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
         Ok(ParcelableUStatus::default())
     }
 
-    fn send(&self, message: &ParcelableUMessage, clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
+    fn send(&self, _message: &ParcelableUMessage, _clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
         Ok(ParcelableUStatus::default())
     }
 
-    // TODO: Discuss what the Bundle extras are for... doesn't appear to be available in Rust (yet?)
-    //  @nullable ParcelableUMessage[] pull(in ParcelableUUri uri, int count, in @nullable Bundle extras, IBinder clientToken);
-    fn pull(&self, uri: &ParcelableUUri, count: i32, flags: i32, clientToken: &SpIBinder) -> binder::Result<Option<Vec<Option<ParcelableUMessage>>>> {
+    fn pull(&self, _uri: &ParcelableUUri, _count: i32, _flags: i32, _clientToken: &SpIBinder) -> binder::Result<Option<Vec<Option<ParcelableUMessage>>>> {
         Ok(None)
     }
 
-    // TODO: Discuss what the Bundle extras are for... doesn't appear to be available in Rust (yet?)
-    // ParcelableUStatus enableDispatching(in ParcelableUUri uri, in @nullable Bundle extras, IBinder clientToken);
-    fn enableDispatching(&self, uri: &ParcelableUUri, flags: i32, clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
+    fn enableDispatching(&self, _uri: &ParcelableUUri, _flags: i32, _clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
         Ok(ParcelableUStatus::default())
     }
 
-    // TODO: Discuss what the Bundle extras are for... doesn't appear to be available in Rust (yet?)
-    // ParcelableUStatus disableDispatching(in ParcelableUUri uri, in @nullable Bundle extras, IBinder clientToken);
-    fn disableDispatching(&self, uri: &ParcelableUUri, flags: i32, clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
+    fn disableDispatching(&self, _uri: &ParcelableUUri, _flags: i32, _clientToken: &SpIBinder) -> binder::Result<ParcelableUStatus> {
         Ok(ParcelableUStatus::default())
     }
 }

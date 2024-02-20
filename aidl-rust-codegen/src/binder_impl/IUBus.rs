@@ -8,10 +8,8 @@
 #![allow(non_snake_case)]
 #[allow(unused_imports)] use binder::binder_impl::IBinderInternal;
 use binder::declare_binder_interface;
-use binder::StatusCode;
 
 use crate::parcelable_stubs;
-use protobuf::Message;
 
 declare_binder_interface! {
   IUBus["org.eclipse.uprotocol.core.ubus.IUBus"] {
