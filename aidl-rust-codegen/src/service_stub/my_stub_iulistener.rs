@@ -21,6 +21,7 @@
  * SPDX-FileCopyrightText: 2023 General Motors GTO LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+
 use parcelable_stubs::ParcelableUMessage;
 
 /// Implementation of the `IUListener` AIDL interface.
