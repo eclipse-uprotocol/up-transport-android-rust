@@ -67,7 +67,7 @@ pub fn run() -> anyhow::Result<()> {
 
     println!("Call registerClient()");
     let _parcelable_ustatus = test_calling_client_iulistener_service.registerClient(
-        &my_package_name,
+        my_package_name,
         &uentity.into(),
         &client_token,
         my_flags,

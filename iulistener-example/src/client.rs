@@ -63,9 +63,7 @@ pub fn run() -> anyhow::Result<()> {
         "parcelable_umessage prior to onReceive: {:?}",
         parcelable_umessage
     );
-    let res = test_iulistener_service
-        .onReceive(&parcelable_umessage)
-        .expect("Failed to trigger onReceive");
+    let res = test_iulistener_service.onReceive(&parcelable_umessage);
     println!("Got result: {:?}", res);
     println!("Done!");
     Ok(())

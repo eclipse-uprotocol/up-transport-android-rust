@@ -141,6 +141,7 @@ pub trait IUBusDefault: Send + Sync {
   }
 }
 pub mod transactions {
+  #[allow(clippy::identity_op)]
   pub const r#registerClient: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 0;
   pub const r#unregisterClient: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 1;
   pub const r#send: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 2;

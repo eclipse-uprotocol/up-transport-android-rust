@@ -98,6 +98,7 @@ pub trait IUListenerDefault: Send + Sync {
   }
 }
 pub mod transactions {
+  #[allow(clippy::identity_op)]
   pub const r#onReceive: binder::binder_impl::TransactionCode = binder::binder_impl::FIRST_CALL_TRANSACTION + 0;
 }
 pub type IUListenerDefaultRef = Option<std::sync::Arc<dyn IUListenerDefault>>;
