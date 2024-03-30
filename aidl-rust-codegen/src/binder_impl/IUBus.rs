@@ -487,6 +487,8 @@ fn on_transact(_aidl_service: &dyn IUBus, _aidl_code: binder::binder_impl::Trans
     _ => Err(binder::StatusCode::UNKNOWN_TRANSACTION)
   }
 }
-pub(crate) mod mangled {
- pub use super::r#IUBus as _3_org_7_eclipse_9_uprotocol_4_core_4_ubus_5_IUBus;
-}
+
+// Generated, but not needed. We use IUBus directly without mangling
+// pub(crate) mod mangled {
+//  pub use super::r#IUBus as _3_org_7_eclipse_9_uprotocol_4_core_4_ubus_5_IUBus;
+// }

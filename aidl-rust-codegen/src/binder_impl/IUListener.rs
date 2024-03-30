@@ -159,6 +159,8 @@ fn on_transact(_aidl_service: &dyn IUListener, _aidl_code: binder::binder_impl::
     _ => Err(binder::StatusCode::UNKNOWN_TRANSACTION)
   }
 }
-pub(crate) mod mangled {
- pub use super::r#IUListener as _3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener;
-}
+
+// Generated, but not needed. We use IUListener directly without mangling
+// pub(crate) mod mangled {
+//  pub use super::r#IUListener as _3_org_7_eclipse_9_uprotocol_4_core_4_ubus_10_IUListener;
+// }
