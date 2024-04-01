@@ -1,0 +1,42 @@
+################################################################################
+# Copyright (c) 2024 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+################################################################################
+
+[workspace]
+resolver = "2"
+members = [
+    "aidl-rust-codegen",
+    "iubus-iulistener-example",
+]
+
+[workspace.package]
+rust-version = "1.66.1"
+version = "0.1.5-SNAPSHOT" # uProtocol version
+repository = "//https://github.com/eclipse-uprotocol/up-client-android-rust"
+homepage = "https://github.com/eclipse-uprotocol"
+authors = [
+    "Pete LeVasseur <plevasseur@gmail.com>",
+]
+edition = "2021"
+keywords = ["uProtocol", "SDK"]
+license = "Apache-2.0"
+
+[workspace.dependencies]
+anyhow = "1.0.69"
+async-trait = "0.1.64"
+binder = { git = "https://github.com/PLeVasseur/binder_rs.git", branch = "main" }
+binder_tokio = { git = "https://github.com/PLeVasseur/binder_rs.git", branch = "main" }
+clap = { version = "4.1.7", features = ["derive"] }
+lazy_static = "1.4.0"
+protobuf = { version = "3.3" }
+tokio = { version = "1.25.0", features = ["full"] }
+up-rust = { git = "https://github.com/eclipse-uprotocol/up-rust", branch = "main" }

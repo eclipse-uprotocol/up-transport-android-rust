@@ -1,0 +1,181 @@
+# ********************************************************************************
+#  Copyright (c) 2024 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************/
+
+name: Build checks and tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    paths:
+      - "aidl-rust-codegen/src/**"
+      - "iubus-iulistener-example"
+      - "Cargo.*"
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,arm-linux-androideabi,armv7-linux-androideabi,i686-linux-android,thumbv7neon-linux-androideabi,x86_64-linux-android
+      - name: Install cargo-ndk
+        run: |
+          cargo install cargo-ndk
+      - name: Install LTS release of the Android NDK
+        run: |
+          NDK_VERSION=r26c
+          NDK_URL=https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux.zip
+          
+          wget -q ${NDK_URL} -O ndk.zip
+
+          unzip -q ndk.zip -d ${{ github.workspace }}
+
+          # Set environment variables
+          echo "ANDROID_NDK_HOME=${{ github.workspace }}/android-ndk-${NDK_VERSION}" >> $GITHUB_ENV
+          echo "PATH=${{ github.workspace }}/android-ndk-${NDK_VERSION}:$PATH" >> $GITHUB_ENV
+      - name: List extracted NDK folder
+        run: ls -l ${{ github.workspace }}
+      - name: Replace libbinder_ndk.so with custom version
+        run: |
+          cp .github/override_android_ndk/x86_64/libbinder_ndk.so ${{ env.ANDROID_NDK_HOME }}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/29/
+          cp .github/override_android_ndk/arm64-v8a/libbinder_ndk.so ${{ env.ANDROID_NDK_HOME }}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/29/
+      - name: build for Android using cargo-ndk
+        run: >
+          cargo ndk -t x86_64 -t arm64-v8a --platform=29 --bindgen build
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,arm-linux-androideabi,armv7-linux-androideabi,i686-linux-android,thumbv7neon-linux-androideabi,x86_64-linux-android
+      - name: Install cargo-ndk
+        run: |
+          cargo install cargo-ndk
+      - name: Install LTS release of the Android NDK
+        run: |
+          NDK_VERSION=r26c
+          NDK_URL=https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux.zip
+          
+          wget -q ${NDK_URL} -O ndk.zip
+
+          unzip -q ndk.zip -d ${{ github.workspace }}
+
+          # Set environment variables
+          echo "ANDROID_NDK_HOME=${{ github.workspace }}/android-ndk-${NDK_VERSION}" >> $GITHUB_ENV
+          echo "PATH=${{ github.workspace }}/android-ndk-${NDK_VERSION}:$PATH" >> $GITHUB_ENV
+      - name: List extracted NDK folder
+        run: ls -l ${{ github.workspace }}
+      - name: Replace libbinder_ndk.so with custom version
+        run: |
+          cp .github/override_android_ndk/arm64-v8a/libbinder_ndk.so $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/29/
+          cp .github/override_android_ndk/x86_64/libbinder_ndk.so $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/29/
+      - name: cargo fmt
+        working-directory: ${{github.workspace}}
+        run: cargo fmt -- --check
+      - name: cargo clippy
+        working-directory: ${{github.workspace}}
+        run: >
+          cargo ndk -t x86_64 -t arm64-v8a --platform=29 --bindgen clippy -- -W warnings -D warnings
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,arm-linux-androideabi,armv7-linux-androideabi,i686-linux-android,thumbv7neon-linux-androideabi,x86_64-linux-android
+      - name: Install cargo-ndk
+        run: |
+          cargo install cargo-ndk
+      - name: Install LTS release of the Android NDK
+        run: |
+          NDK_VERSION=r26c
+          NDK_URL=https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux.zip
+          
+          wget -q ${NDK_URL} -O ndk.zip
+
+          unzip -q ndk.zip -d ${{ github.workspace }}
+
+          # Set environment variables
+          echo "ANDROID_NDK_HOME=${{ github.workspace }}/android-ndk-${NDK_VERSION}" >> $GITHUB_ENV
+          echo "PATH=${{ github.workspace }}/android-ndk-${NDK_VERSION}:$PATH" >> $GITHUB_ENV
+      - name: List extracted NDK folder
+        run: ls -l ${{ github.workspace }}
+      - name: Replace libbinder_ndk.so with custom version
+        run: |
+          cp .github/override_android_ndk/arm64-v8a/libbinder_ndk.so $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/29/
+          cp .github/override_android_ndk/x86_64/libbinder_ndk.so $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/29/
+      - name: build tests for Android using cargo-ndk
+        run: >
+          cargo ndk -t x86_64 -t arm64-v8a --platform=29 --bindgen test --no-run
+
+#  coverage:
+#    name: Collect coverage info
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: dtolnay/rust-toolchain@stable
+#      - name: Install dependencies
+#        run: |
+#          cargo install cargo-tarpaulin
+#      - name: Show toolchain information
+#        working-directory: ${{github.workspace}}
+#        run: |
+#          rustup toolchain list
+#          cargo --version
+#      - name: Run tests to collect code coverage information
+#        run: |
+#          # enable nightly features so that we can also include Doctests
+#          RUSTC_BOOTSTRAP=1 cargo tarpaulin -o xml -o lcov -o html --doc --tests --all-features
+#      - name: Upload coverage report (xml)
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: Test Coverage Results (xml)
+#          path: cobertura.xml
+#      - name: Upload coverage report (lcov)
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: Test Coverage Results (lcov)
+#          path: lcov.info
+#      - name: Upload coverage report (html)
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: Test Coverage Results (html)
+#          path: tarpaulin-report.html
+
+  build-docs:
+    name: Build documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Documentation
+        working-directory: ${{github.workspace}}
+        run: RUSTDOCFLAGS=-Dwarnings cargo doc -p aidl-rust-codegen --no-deps
