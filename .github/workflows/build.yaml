@@ -15,7 +15,7 @@ name: Build checks and tests
 
 on:
   push:
-    branches: [ main, feature/aidl-rust-codegen ]
+    branches: [ main ]
   pull_request:
     paths:
       - "aidl-rust-codegen/src/**"
