@@ -18,7 +18,8 @@ on:
     branches: [ main, feature/aidl-rust-codegen ]
   pull_request:
     paths:
-      - "src/**"
+      - "aidl-rust-codegen/src/**"
+      - "iubus-iulistener-example"
       - "Cargo.*"
   workflow_call:
   workflow_dispatch:

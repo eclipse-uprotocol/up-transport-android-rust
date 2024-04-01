@@ -609,22 +609,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "iulistener-example"
-version = "0.1.5-SNAPSHOT"
-dependencies = [
- "aidl-rust-codegen",
- "anyhow",
- "async-trait",
- "binder",
- "binder_tokio",
- "clap",
- "lazy_static",
- "protobuf",
- "tokio",
- "up-rust",
-]
-
-[[package]]
 name = "js-sys"
 version = "0.3.68"
 source = "registry+https://github.com/rust-lang/crates.io-index"
